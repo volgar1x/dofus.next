@@ -9,6 +9,6 @@ defmodule DofusNext.Frontend.Dofus.Version do
 
   def handle(sess, invalid) do
     Logger.warn "a client tried to connect with an invalid version #{invalid}"
-    Session.close(sess)
+    Session.send_and_close(sess, "AlEv1.29.1")
   end
 end
