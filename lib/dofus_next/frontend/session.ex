@@ -7,6 +7,10 @@ defmodule DofusNext.Frontend.Session do
 
   alias __MODULE__, as: T
 
+  def send(s, data) when is_list(data) do
+    List.foldl(s, fn (x, acc) -> T.send(acc, x) end)
+  end
+
   def send(s, data) do
     Logger.debug "SND #{data}"
     s.transport.send(s.socket, << data :: binary, 0 :: utf8 >>)
