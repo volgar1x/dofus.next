@@ -41,7 +41,9 @@ defmodule DofusNext.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps(:prod) do
-    [{:ranch, "~> 1.0"}]
+    [{:ranch,    "~> 1.0"},
+     {:ecto,     "~> 0.11.3"},
+     {:postgrex, "~> 0.8.0"}]
   end
 
   defp deps(:dev) do

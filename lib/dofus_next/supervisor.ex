@@ -7,6 +7,7 @@ defmodule DofusNext.Supervisor do
 
   def init([]) do
     children = [
+      worker(DofusNext.Repo, []),
       supervisor(DofusNext.Frontend, []),
     ]
 

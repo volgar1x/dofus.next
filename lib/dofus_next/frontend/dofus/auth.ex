@@ -1,24 +1,36 @@
 defmodule DofusNext.Frontend.Dofus.Auth do
   use Bitwise
   require Logger
+  alias DofusNext.Repo
+  alias DofusNext.User
   alias DofusNext.Frontend.Session
   alias DofusNext.Frontend.Dofus.Realm
-  alias DofusNext.Frontend.Dofus.Nicknaming
 
   def handle(sess, data) do
-    [user, pass] = String.split(data, "\n#1", parts: 2)
+    [name, pass] = String.split(data, "\n#1", parts: 2)
     pass = decrypt(pass, Session.get_attr(sess, :id))
-    Logger.debug "user: #{user} pass: #{pass}"
-    handle(sess, user, pass)
+    Logger.debug "user: #{name} pass: #{pass}"
+    handle(sess, name, pass)
   end
 
-  defp handle(sess, "test", "test") do
-    sess |> Session.put_attr(:state, Nicknaming)
-         |> Session.send("AlEr")
-  end
+  defp handle(sess, name, pass) do
+    case Repo.get_by(User, name: name) do
+      nil ->
+        Session.send_close(sess, "AlEf")
 
-  defp handle(sess, _user, _pass) do
-    Session.send_close(sess, "AlEf")
+      user ->
+        if User.is_valid_pass?(user, pass) do
+          sess
+          |> Session.put_attr(user: user, state: Realm)
+          |> Session.send(~w(Ad#{user.nick}
+                             Ac0
+                             AH1;1;75;1
+                             AlK0
+                             AQ#{user.question}))
+        else
+          Session.send_close(sess, "AlEf")
+        end
+    end
   end
 
   @alphabet "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
