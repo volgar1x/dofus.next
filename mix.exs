@@ -20,7 +20,7 @@ defmodule DofusNext.Mixfile do
   end
 
   defp application(:prod) do
-    ~w(logger)a
+    ~w(logger ranch cowboy plug)a
   end
 
   defp application(:dev) do
@@ -41,9 +41,11 @@ defmodule DofusNext.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps(:prod) do
-    [{:ranch,    "~> 1.0"},
-     {:ecto,     "~> 0.11.3"},
-     {:postgrex, "~> 0.8.0"}]
+    [{:ranch,  "~> 1.0"},
+     {:cowboy, "~> 1.0"},
+     {:plug,   "~> 0.13.0"},
+     {:poison, "~> 1.4.0"},
+     {:hexate, "~> 0.5.1"}]
   end
 
   defp deps(:dev) do

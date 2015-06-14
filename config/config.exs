@@ -23,9 +23,3 @@ use Mix.Config
 #
 #     import_config "#{Mix.env}.exs"
 
-config :dofus_next, DofusNext.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  database: "dnext_prod",
-  username: "antoine",
-  password: "lel",
-  hostname: "localhost"
